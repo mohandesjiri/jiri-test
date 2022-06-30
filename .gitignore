@@ -1,0 +1,6 @@
+/dist
+*.clangd
+*~
+\#*\#
+b_counter
+
