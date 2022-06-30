@@ -1,0 +1,24 @@
+ Contract Design
+===================
+- amount_min & fee relation
+- double transfer
+- deadline [?]
+- Add third fee (fee_swap_completed, fee_swap_failed, fee_transfer_back)
+- Add a 4th fee (failure transfer back)
+- Add "owner" to middle state data. (prevents race condition) [locking relayer]
+
+ Relayer
+=============
+- Dust
+	- transfer both [sending to > to_addr]
+	- transfer dust to fee collector
+
+ Implementation
+====================
+- keep in state: dust amount remaining in from_acc
+- cleanup instruction
+
+ Bug
+====================
+- fee_transfer_back (failure case)
+- parsed seq from wormhole is wrong (1 offset) [needs coordination with client]
