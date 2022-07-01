@@ -3,4 +3,7 @@
 *~
 \#*\#
 b_counter
-
+.clang-format
+/src/program-c/src/mayanswap/sol
+/src/program-c/src/mayanswap/solana_sdk.h
+.idea
