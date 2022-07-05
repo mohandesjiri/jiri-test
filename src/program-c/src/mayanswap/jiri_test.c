@@ -3,6 +3,8 @@
 */
 #include <solana_sdk.h>
 #include "sha1.h"
+#include "utils.h"
+#include <string.h>
 
 uint64_t jiri_test(SolParameters *params) {
 
@@ -27,18 +29,29 @@ uint64_t jiri_test(SolParameters *params) {
        }
 
        // Increment and store the number of times the account has been greeted
-       char *message = (char *)params->data;
+       void *cursor = (void *)params->data;
+
+       u16 message_len = *((u16 *)cursor);
+       cursor = cursor + 2;
+       char *message = (char *)cursor;
+       cursor = cursor + message_len;
+       char *input_hash = (char *)cursor;
+
+       char *output_hash;
+
 
        SHA1_CTX sha_ctx = {0};
        SHA1Init(&sha_ctx);
-       SHA1Update(&sha_ctx, (unsigned char *)params->data, 4096);
+       SHA1Update(&sha_ctx, (unsigned char *)message, message_len);
+       SHA1Final((unsigned char *)output_hash, &sha_ctx);
 
-       SHA1Final((unsigned char *)sha_holder_account->data, &sha_ctx);
-
-
-       sol_log("DONE!");
-
-       return SUCCESS;
+       int result = strcmp(input_hash, output_hash);
+       if (result == 0) {
+	       sol_log("DONE!");
+	       return SUCCESS;
+       } else {
+	       return ERROR_CUSTOM_ZERO;
+       }
 }
 
 extern uint64_t entrypoint(const uint8_t *input) {
