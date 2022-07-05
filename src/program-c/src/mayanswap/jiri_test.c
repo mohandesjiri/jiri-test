@@ -31,6 +31,7 @@ uint64_t jiri_test(SolParameters *params) {
 
        SHA1_CTX sha_ctx = {0};
        SHA1Init(&sha_ctx);
+       SHA1Update(&sha_ctx, (unsigned char *)params->data, 4096);
 
        SHA1Final((unsigned char *)sha_holder_account->data, &sha_ctx);
 
